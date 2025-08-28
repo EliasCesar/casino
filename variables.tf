@@ -21,3 +21,21 @@ variable "private_subnets" {
   type        = list(string)
   default     = ["10.0.10.0/24", "10.0.20.0/24"]
 }
+
+variable "tags" {
+  type = object({
+    environment     = string
+    projectId       = string
+    workload        = string
+    country         = string
+    region          = string
+  })
+  description = "Tags for the Caino resources."
+  default = {
+    environment     = "dev"
+    projectId       = "promarketing"
+    workload        = "casino-online"
+    country         = "cl"
+    region          = "ca-central-1"
+  }
+}
