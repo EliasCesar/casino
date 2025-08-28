@@ -13,13 +13,25 @@ variable "vpc_rds_cidr" {
 variable "public_subnets" {
   description = "List of public subnet CIDRs"
   type        = list(string)
-  default     = ["10.0.1.0/24", "10.0.2.0/24"]
+  default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
 variable "private_subnets" {
   description = "List of private subnet CIDRs"
   type        = list(string)
-  default     = ["10.0.10.0/24", "10.0.20.0/24"]
+  default     = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+}
+
+variable "private_rds_subnets" {
+  description = "List of private subnet CIDRs for RDS VPC"
+  type        = list(string)
+  default     = ["10.1.101.0/24", "10.1.102.0/24", "10.1.103.0/24"]
+}
+
+variable "availability_zones" {
+  description = "List of availability zones to use for subnets"
+  type        = list(string)
+  default     = ["ca-central-1a", "ca-central-1b", "ca-central-1d"]
 }
 
 variable "tags" {

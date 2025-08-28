@@ -1,11 +1,11 @@
 resource "aws_vpc" "app" {
   cidr_block = var.vpc_app_cidr
-  tags       = var.tags
+  tags       = merge(var.tags, { Name = "${var.vpc_app_name}" })
 }
 
 resource "aws_vpc" "rds" {
   cidr_block = var.vpc_rds_cidr
-  tags       = var.tags
+  tags       = merge(var.tags, { Name = "${var.vpc_rds_name}" })
 }
 
 resource "aws_vpc_peering_connection" "peer" {
@@ -19,19 +19,27 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.app.id
   cidr_block              = var.public_subnets[count.index]
   map_public_ip_on_launch = true
-  tags                    = var.tags
+  availability_zone       = var.availability_zones[count.index]
+  tags                    = merge(var.tags, { Name = "${var.subnet_public_app_name}" })
 }
 
 resource "aws_subnet" "private" {
   count      = length(var.private_subnets)
   vpc_id     = aws_vpc.app.id
   cidr_block = var.private_subnets[count.index]
-  tags       = var.tags
+  availability_zone = var.availability_zones[count.index]
+  tags       = merge(var.tags, { Name = "${var.subnet_private_app_name}" })
 }
+  output "private_subnet_ids" {
+    value = aws_subnet.private[*].id
+  }
+  output "public_subnet_ids" {
+    value = aws_subnet.public[*].id
+  }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.app.id
-  tags  = var.tags
+  tags  = merge(var.tags, { Name = "${var.igw_app_name}" })
 }
 
 resource "aws_nat_gateway" "nat" {
@@ -40,14 +48,23 @@ resource "aws_nat_gateway" "nat" {
   tags          = var.tags
   }
 
+resource "aws_subnet" "private_rds" {
+  count      = length(var.private_rds_subnets)
+  vpc_id     = aws_vpc.rds.id
+  cidr_block = var.private_rds_subnets[count.index]
+  availability_zone = var.availability_zones[count.index]
+  tags       = merge(var.tags, { Name = "${var.subnet_rds_name}" })
+}
+
   resource "aws_eip" "nat" {
     domain = "vpc"
   }
-
-output "vpc_app_id" {
-  value = aws_vpc.app.id
+  output "vpc_rds_id" {
+    value = aws_vpc.rds.id
+  }
+output "private_rds_subnet_ids" {
+  value = aws_subnet.private_rds[*].id
 }
-
-output "vpc_rds_id" {
-  value = aws_vpc.rds.id
-}
+  output "vpc_app_id" {
+    value = aws_vpc.app.id
+  }
