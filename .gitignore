@@ -1,0 +1,30 @@
+# Terraform state
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+crash.log
+
+# Local .tfvars files
+*.tfvars
+
+# Sensitive files
+*.auto.tfvars
+
+# Module directories
+modules/*/.terraform/
+modules/*/*.tfstate
+modules/*/*.tfstate.*
+
+# VS Code
+.vscode/
+
+# Backup files
+*.backup
+*.bak
+
+# Ignore environment files
+.env
+
+# Ignore Draw.io autosave
+*.drawio~
