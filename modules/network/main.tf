@@ -30,12 +30,7 @@ resource "aws_subnet" "private" {
   availability_zone = var.availability_zones[count.index]
   tags       = merge(var.tags, { Name = "${var.subnet_private_app_name}" })
 }
-  output "private_subnet_ids" {
-    value = aws_subnet.private[*].id
-  }
-  output "public_subnet_ids" {
-    value = aws_subnet.public[*].id
-  }
+  // ...existing code...
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.app.id
@@ -56,15 +51,6 @@ resource "aws_subnet" "private_rds" {
   tags       = merge(var.tags, { Name = "${var.subnet_rds_name}" })
 }
 
-  resource "aws_eip" "nat" {
-    domain = "vpc"
-  }
-  output "vpc_rds_id" {
-    value = aws_vpc.rds.id
-  }
-output "private_rds_subnet_ids" {
-  value = aws_subnet.private_rds[*].id
+resource "aws_eip" "nat" {
+  domain = "vpc"
 }
-  output "vpc_app_id" {
-    value = aws_vpc.app.id
-  }
