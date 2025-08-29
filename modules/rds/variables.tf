@@ -16,3 +16,5 @@ variable "instance_count" { type = number }
 variable "instance_class" { type = string }
 variable "publicly_accessible" { type = bool }
 variable "tags" { type = map(string) }
+variable "engine_mode" { type    = string }
+variable "private_rds_subnets" {  type        = list(string) }
