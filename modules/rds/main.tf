@@ -1,3 +1,9 @@
+resource "aws_db_subnet_group" "rds" {
+  name       = "rds-db-subnet-group"
+  subnet_ids = var.private_rds_subnets
+  tags       = var.tags
+}
+
 resource "aws_rds_cluster" "serverless" {
   cluster_identifier      = var.cluster_identifier
   engine                 = var.engine
@@ -15,6 +21,10 @@ resource "aws_rds_cluster" "serverless" {
   deletion_protection    = var.deletion_protection
   enable_http_endpoint   = var.enable_http_endpoint
   tags                   = var.tags
+  serverlessv2_scaling_configuration {
+    min_capacity = var.serverlessv2_min_capacity
+    max_capacity = var.serverlessv2_max_capacity
+  }
 }
 
 resource "aws_rds_cluster_instance" "serverless_instance" {
@@ -27,10 +37,4 @@ resource "aws_rds_cluster_instance" "serverless_instance" {
   publicly_accessible    = var.publicly_accessible
   db_subnet_group_name   = aws_db_subnet_group.rds.name
   tags                   = var.tags
-}
-
-resource "aws_db_subnet_group" "rds" {
-  name       = var.db_subnet_group_name
-  subnet_ids = var.private_rds_subnets
-  tags       = var.tags
 }
