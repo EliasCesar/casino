@@ -73,3 +73,20 @@ output "redis_port" {
 output "redis_subnet_group_name" {
   value = module.redis.redis_subnet_group_name
 }
+
+# --- Outputs del módulo ACM ---
+output "acm_certificate_arn" {
+  value = module.acm_alb.certificate_arn
+}
+
+output "acm_certificate_domain_name" {
+  value = module.acm_alb.certificate_domain_name
+}
+
+output "acm_certificate_status" {
+  value = module.acm_alb.certificate_status
+}
+
+output "acm_certificate_validation_id" {
+  value = module.acm_alb.certificate_validation_id
+}

@@ -108,3 +108,13 @@ module "redis" {
   security_group_ids    = [aws_security_group.rds.id]
   tags                  = var.tags
 }
+
+# --- Certificados ACM ---
+module "acm_alb" {
+  source                      = "./modules/acm"
+  domain_name                 = var.domain_alb
+  validation_method           = var.acm_validation_method
+  subject_alternative_names   = var.acm_subject_alternative_names
+  validation_record_fqdns     = var.acm_validation_record_fqdns
+  tags                       = var.tags
+}

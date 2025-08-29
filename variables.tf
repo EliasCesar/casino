@@ -159,3 +159,28 @@ variable "redis_port" {
   type        = number
   default     = 6379
 }
+
+# --- Variables para ACM ---
+variable "domain_alb" {
+  description = "Domain name for ACM certificate (ALB)"
+  type        = string
+  default     = "example.com"
+}
+
+variable "acm_validation_method" {
+  description = "Validation method for ACM certificate (DNS or EMAIL)"
+  type        = string
+  default     = "DNS"
+}
+
+variable "acm_subject_alternative_names" {
+  description = "List of SANs for ACM certificate"
+  type        = list(string)
+  default     = []
+}
+
+variable "acm_validation_record_fqdns" {
+  description = "List of FQDNs for ACM DNS validation"
+  type        = list(string)
+  default     = []
+}
