@@ -6,6 +6,10 @@ resource "random_id" "hash" {
   byte_length = 2
 }
 
+resource "random_id" "redis" {
+  byte_length = 2
+}
+
 resource "random_password" "rds_master" {
   length  = 12
   special = true
@@ -89,4 +93,18 @@ module "rds_password_secret" {
   secret_description = "RDS master password managed by Terraform"
   secret_string     = random_password.rds_master.result
   tags              = var.tags
+}
+
+# --- Redis  ---
+module "redis" {
+  source                = "./modules/redis"
+  subnet_group_name     = "redis-subnet-group-${random_id.rds.hex}"
+  subnet_ids            = module.network.private_rds_subnet_ids
+  cluster_id            = "redis-cluster-${random_id.rds.hex}"
+  node_type             = var.redis_node_type
+  num_cache_nodes       = var.redis_num_cache_nodes
+  parameter_group_name  = var.redis_parameter_group_name
+  port                  = var.redis_port
+  security_group_ids    = [aws_security_group.rds.id]
+  tags                  = var.tags
 }

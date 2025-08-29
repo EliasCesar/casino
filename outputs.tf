@@ -57,3 +57,19 @@ output "rds_password_secret_arn" {
 output "rds_password_secret_version_id" {
   value = module.rds_password_secret.secret_version_id
 }
+
+output "redis_cluster_id" {
+  value = module.redis.redis_cluster_id
+}
+
+output "redis_endpoint" {
+  value = module.redis.redis_endpoint
+}
+
+output "redis_port" {
+  value = module.redis.redis_port
+}
+
+output "redis_subnet_group_name" {
+  value = module.redis.redis_subnet_group_name
+}

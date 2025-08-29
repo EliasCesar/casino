@@ -134,3 +134,28 @@ variable "tags" {
     region          = "ca-central-1"
   }
 }
+
+# --- Variables para Redis ---
+variable "redis_node_type" {
+  description = "Instance type for Redis nodes"
+  type        = string
+  default     = "cache.t3.micro"
+}
+
+variable "redis_num_cache_nodes" {
+  description = "Number of Redis cache nodes"
+  type        = number
+  default     = 1
+}
+
+variable "redis_parameter_group_name" {
+  description = "Parameter group name for Redis"
+  type        = string
+  default     = "default.redis7"
+}
+
+variable "redis_port" {
+  description = "Port for Redis access"
+  type        = number
+  default     = 6379
+}
